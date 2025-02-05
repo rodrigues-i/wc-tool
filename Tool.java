@@ -3,6 +3,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 
 public class Tool {
@@ -29,6 +32,7 @@ public class Tool {
             case "-l":
                 try {
                     printNumberLines(fileName);
+                    break;
                 }
                 catch(FileNotFoundException ex) {
                     printFileNotFound(fileName);
@@ -36,10 +40,37 @@ public class Tool {
                 }
                 catch(IOException ex) {
                     System.out.println(ex.getMessage());
+                    break;
                 }
-                break;
+            case "-w":
+                try {
+                    String line;
+                    BufferedReader br = new BufferedReader(new FileReader(fileName));
+                    long wordCount = 0;
+                    while((line = br.readLine()) != null) {
+                        String currentLine = line.trim();
+                        if(currentLine.equals(""))
+                            continue;
+                        String[] wordArray = currentLine.split(" ");
+                        int numberWordCurrentLine = wordArray.length;
+                        wordCount += numberWordCurrentLine;
+
+                    }
+                    System.out.println(wordCount + " " + fileName);
+                    br.close();
+                    break;
+                }
+                catch(FileNotFoundException ex) {
+                    printFileNotFound(fileName);
+                    break;
+                }
+                catch(IOException ex) {
+                    System.out.println(ex.getMessage());
+                    break;
+                }
+
+            }
         }
-    }
 
     private static void printFileSize(File file, String fileName) {
         if(!file.exists()) {
