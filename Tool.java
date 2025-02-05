@@ -14,6 +14,11 @@ public class Tool {
     private static void process_command(String[] args) {
         if(args.length == 0)
             return;
+        if(args.length > 2) {
+            System.out.println("Invalid number of arguments passed.\nExpected 2 arguments, but %d were passed.".formatted(args.length));
+            return;
+        }
+
         String command = args[0];
         String fileName = args[1];
         File file = new File(fileName);
@@ -26,7 +31,8 @@ public class Tool {
                     printNumberLines(fileName);
                 }
                 catch(FileNotFoundException ex) {
-                    System.out.println(ex.getMessage());
+                    printFileNotFound(fileName);
+                    break;
                 }
                 catch(IOException ex) {
                     System.out.println(ex.getMessage());
@@ -36,6 +42,10 @@ public class Tool {
     }
 
     private static void printFileSize(File file, String fileName) {
+        if(!file.exists()) {
+            printFileNotFound(fileName);
+            return;
+        }
         long fileSize = file.length();
         String outputMsg = fileSize + " " + fileName;
         System.out.println(outputMsg);
@@ -48,5 +58,9 @@ public class Tool {
         String outputM = "%d %s".formatted(numberLines, fileName);
         System.out.println(outputM);
         br.close();
+    }
+
+    private static void printFileNotFound(String fileName) {
+        System.out.println("File %s not found".formatted(fileName));
     }
 }
