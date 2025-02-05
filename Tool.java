@@ -19,17 +19,11 @@ public class Tool {
         File file = new File(fileName);
         switch(command) {
             case "-c":
-                long fileSize = file.length();
-                String outputMsg = fileSize + " " + fileName;
-                System.out.println(outputMsg);
+                printFileSize(file, fileName);
                 break;
             case "-l":
                 try {
-                    BufferedReader br = new BufferedReader(new FileReader(fileName));
-                    long numberLines = br.lines().count();
-                    String outputM = "%d %s".formatted(numberLines, fileName);
-                    System.out.println(outputM);
-                    br.close();
+                    printNumberLines(fileName);
                 }
                 catch(FileNotFoundException ex) {
                     System.out.println(ex.getMessage());
@@ -39,5 +33,20 @@ public class Tool {
                 }
                 break;
         }
+    }
+
+    private static void printFileSize(File file, String fileName) {
+        long fileSize = file.length();
+        String outputMsg = fileSize + " " + fileName;
+        System.out.println(outputMsg);
+    }
+
+    private static void printNumberLines(String fileName)
+    throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        long numberLines = br.lines().count();
+        String outputM = "%d %s".formatted(numberLines, fileName);
+        System.out.println(outputM);
+        br.close();
     }
 }
